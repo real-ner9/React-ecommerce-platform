@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <header className={classNames('header', mobile ? 'header-mobile' : 'header-desktop')}>
-      <TestBanner />
+      {/*<TestBanner />*/}
       <div className="container">
         {mobile ? <HeaderMobile /> : <HeaderDesktop />}
       </div>
