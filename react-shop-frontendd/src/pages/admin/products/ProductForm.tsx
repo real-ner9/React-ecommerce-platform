@@ -1,242 +1,262 @@
-import React, { useEffect, useState } from 'react'
-import { any, number, object, string, type TypeOf } from 'zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+import React, {useEffect, useState} from 'react'
+import {any, number, object, string, type TypeOf} from 'zod'
+import {FormProvider, type SubmitHandler, useForm} from 'react-hook-form'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, TextareaAutosize, Typography } from "@mui/material";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Box, Button, TextareaAutosize, Typography} from "@mui/material";
 
 import FileInput from "../../../components/FileInput/FileInput";
-import { StyledLoadingButton } from "../../../components/StyledButtons";
-import { validationErrors } from "../../../helpers/validationErrors";
-import type {
-	ACCEPTED_IMAGE_TYPES,
-	CreateFilesPayload,
-} from "../../../contexts/files/types";;
-import { useFiles } from "../../../contexts/files/FilesContext";
-import type { Product } from "../../../contexts/products/types";
-;
+import {StyledLoadingButton} from "../../../components/StyledButtons";
+import {validationErrors} from "../../../helpers/validationErrors";
+import {generateRandomProductData, getRandomOption} from "../../../helpers/generateRandomProductData";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  type CreateFilesPayload,
+} from "../../../contexts/files/types";
+import {useFiles} from "../../../contexts/files/FilesContext";
+import type {Product} from "../../../contexts/products/types";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
 import FormInputNumber from "../../../components/FormInputs/Text/FormInputNumber";
 import FormInputSelect from "../../../components/FormInputs/Select/FormInputSelect";
 import "./styles.scss";
-import type { Brand } from "../../../contexts/productsFilters/BrandsContext/types";
-;
-import { useCategories } from "../../../contexts/productsFilters/CategoriesContext/CategoriesContext";
-import { useBrands } from "../../../contexts/productsFilters/BrandsContext/BrandsContext";
-import type { Color } from "../../../contexts/productsFilters/ColorsContext/types";
-;
-import type { Amount } from "../../../contexts/productsFilters/AmountContext/types";
-;
-import { useColors } from "../../../contexts/productsFilters/ColorsContext/ColorsContext";
-import { useAmount } from "../../../contexts/productsFilters/AmountContext/AmountContext";
+import type {Brand} from "../../../contexts/productsFilters/BrandsContext/types";
+import {useCategories} from "../../../contexts/productsFilters/CategoriesContext/CategoriesContext";
+import {useBrands} from "../../../contexts/productsFilters/BrandsContext/BrandsContext";
+import type {Color} from "../../../contexts/productsFilters/ColorsContext/types";
+import type {Amount} from "../../../contexts/productsFilters/AmountContext/types";
+import {useColors} from "../../../contexts/productsFilters/ColorsContext/ColorsContext";
+import {useAmount} from "../../../contexts/productsFilters/AmountContext/AmountContext";
 import ColorBadge from "../../../components/ColorLabel/ColorBadge";
 
 const productSchema = object({
-	name: string({
-		errorMap: () => {
-			return { message: validationErrors.required("название товара") };
-		},
-	})
-		.nonempty(validationErrors.required("название товара"))
-		.min(2, validationErrors.min("название товара", 2)),
-	count: number({
-		errorMap: () => {
-			return { message: validationErrors.required("количество товара") };
-		},
-	}).min(0, validationErrors.min("количество товара", 0)),
-	price: number({
-		errorMap: () => {
-			return { message: validationErrors.required("цена") };
-		},
-	}).min(0, validationErrors.min("цена", 0)),
-	description: string().optional(),
-	category_id: number({
-		errorMap: () => {
-			return { message: validationErrors.required("категория товара") };
-		},
-	}),
-	brand_id: number({
-		errorMap: () => {
-			return { message: validationErrors.required("бренд") };
-		},
-	}),
-	color_id: any().optional(),
-	amount_id: any().optional(),
-	img_ids: any().optional(),
+  name: string({
+    errorMap: () => {
+      return {message: validationErrors.required("название товара")};
+    },
+  })
+    .nonempty(validationErrors.required("название товара"))
+    .min(2, validationErrors.min("название товара", 2)),
+  count: number({
+    errorMap: () => {
+      return {message: validationErrors.required("количество товара")};
+    },
+  }).min(0, validationErrors.min("количество товара", 0)),
+  price: number({
+    errorMap: () => {
+      return {message: validationErrors.required("цена")};
+    },
+  }).min(0, validationErrors.min("цена", 0)),
+  description: string().optional(),
+  category_id: number({
+    errorMap: () => {
+      return {message: validationErrors.required("категория товара")};
+    },
+  }),
+  brand_id: number({
+    errorMap: () => {
+      return {message: validationErrors.required("бренд")};
+    },
+  }),
+  color_id: any().optional(),
+  amount_id: any().optional(),
+  img_ids: any().optional(),
 });
 
 export type ProductInput = TypeOf<typeof productSchema>;
 
 type Props = {
-	record?: Product;
-	onSubmit: (data: ProductInput) => Promise<any>;
-	title: string;
-	buttonTitle: string;
+  record?: Product;
+  onSubmit: (data: ProductInput) => Promise<any>;
+  title: string;
+  buttonTitle: string;
 };
 
 const ProductForm: React.FC<Props> = ({
-	record,
-	onSubmit,
-	buttonTitle,
-	title,
-}) => {
-	const [loading, setLoading] = useState<boolean>(false);
-	const [brands, setBrands] = useState<Brand[]>([]);
-	const [colors, setColors] = useState<Color[]>([]);
-	const [amounts, setAmounts] = useState<Amount[]>([]);
+                                        record,
+                                        onSubmit,
+                                        buttonTitle,
+                                        title,
+                                      }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [colors, setColors] = useState<Color[]>([]);
+  const [amounts, setAmounts] = useState<Amount[]>([]);
 
-	const { categories } = useCategories();
-	const { getBrands } = useBrands();
-	const { createFiles } = useFiles();
-	const { getColors } = useColors();
-	const { getAmounts } = useAmount();
+  const {categories} = useCategories();
+  const {getBrands} = useBrands();
+  const {createFiles} = useFiles();
+  const {getColors} = useColors();
+  const {getAmounts} = useAmount();
 
-	const methods = useForm<ProductInput>({
-		resolver: zodResolver(productSchema),
-		defaultValues: {
-			...record,
-			img_ids: record?.img_ids || [],
-		},
-	});
+  const methods = useForm<ProductInput>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      ...record,
+      img_ids: record?.img_ids || [],
+    },
+  });
 
-	const {
-		formState: { errors, isSubmitSuccessful },
-		reset,
-		handleSubmit,
-		watch,
-	} = methods;
+  const {
+    formState: {errors, isSubmitSuccessful},
+    reset,
+    handleSubmit,
+    watch,
+  } = methods;
 
-	const category_id = watch("category_id");
+  const category_id = watch("category_id");
 
-	const onSubmitHandler: SubmitHandler<ProductInput> = (data) => {
-		setLoading(true);
+  const onSubmitHandler: SubmitHandler<ProductInput> = (data) => {
+    setLoading(true);
 
-		onSubmit(data).finally(() => {
-			setLoading(false);
-		});
-	};
+    onSubmit(data).finally(() => {
+      setLoading(false);
+    });
+  };
 
-	const handleCreateProductImg = (files: File[]) => {
-		const payload: CreateFilesPayload = {
-			files,
-			path: "products/upload-images",
-			key: "images",
-		};
+  const handleCreateProductImg = (files: File[]) => {
+    const payload: CreateFilesPayload = {
+      files,
+      path: "products/upload-images",
+      key: "images",
+    };
 
-		return createFiles(payload);
-	};
+    return createFiles(payload);
+  };
 
-	useEffect(() => {
-		if (isSubmitSuccessful) {
-			reset();
-		}
-	}, [isSubmitSuccessful, reset]);
+  const handleGenerateRandom = () => {
+    const randomData = generateRandomProductData();
+    methods.setValue('name', randomData.name);
+    methods.setValue('count', randomData.count);
+    methods.setValue('price', randomData.price);
+    methods.setValue('description', randomData.description);
 
-	useEffect(() => {
-		if (category_id) {
-			getBrands({ category_id })
-				.then((data) => {
-					setBrands(data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+    if (categories?.length) {
+      methods.setValue('category_id', getRandomOption(categories));
+    }
+    if (brands.length) {
+      methods.setValue('brand_id', getRandomOption(brands));
+    }
+    if (colors.length) {
+      methods.setValue('color_id', getRandomOption(colors));
+    }
+    if (amounts.length) {
+      methods.setValue('amount_id', getRandomOption(amounts));
+    }
+  };
 
-			getColors({ category_id })
-				.then((data) => {
-					setColors(data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
-			getAmounts({ category_id })
-				.then((data) => {
-					setAmounts(data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
-	}, [category_id]);
+  useEffect(() => {
+    if (category_id) {
+      getBrands({category_id})
+        .then((data) => {
+          setBrands(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-	useEffect(() => {
-		console.log(errors);
-	}, [errors]);
+      getColors({category_id})
+        .then((data) => {
+          setColors(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-	return (
-		<Box>
-			<Typography
-				variant="h4"
-				component="h1"
-				textAlign="center"
-				sx={{ mb: "2rem" }}
-			>
-				{title}
-			</Typography>
-			<Box
-				component="form"
-				className="product-form"
-				noValidate
-				autoComplete="off"
-				onSubmit={handleSubmit(onSubmitHandler)}
-			>
-				<FormProvider {...methods}>
-					<FormInputText label="Название товара" name="name" />
+      getAmounts({category_id})
+        .then((data) => {
+          setAmounts(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [category_id]);
 
-					<FormInputNumber label="Количество товара" name="count" />
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
-					<FormInputNumber label="Цена" name="price" />
+  return (
+    <Box>
+      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '2rem'}}>
+        <Typography variant="h4" component="h1">
+          {title}
+        </Typography>
+        {!record && (
+          <Button variant="outlined" size="small" onClick={handleGenerateRandom}>
+            Случайные данные
+          </Button>
+        )}
+      </Box>
+      <Box
+        component="form"
+        className="product-form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmitHandler)}
+      >
+        <FormProvider {...methods}>
+          <FormInputText label="Название товара" name="name"/>
 
-					<FormInputText
-						InputProps={{
-							inputComponent: TextareaAutosize,
-						}}
-						name="description"
-						label="Описание"
-						rows={4}
-						multiline
-					/>
+          <FormInputNumber label="Количество товара" name="count"/>
 
-					<FormInputSelect
-						label="Категория товара"
-						name="category_id"
-						options={categories}
-					/>
+          <FormInputNumber label="Цена" name="price"/>
 
-					<FormInputSelect label="Бренд" name="brand_id" options={brands} />
+          <FormInputText
+            InputProps={{
+              inputComponent: TextareaAutosize,
+            }}
+            name="description"
+            label="Описание"
+            rows={4}
+            multiline
+          />
 
-					<FormInputSelect
-						label="Цвет"
-						name="color_id"
-						options={colors}
-						optionIcon={(option: any) => <ColorBadge color={option.value} />}
-					/>
+          <FormInputSelect
+            label="Категория товара"
+            name="category_id"
+            options={categories}
+          />
 
-					<FormInputSelect label="Обьем" name="amount_id" options={amounts} />
+          <FormInputSelect label="Бренд" name="brand_id" options={brands}/>
 
-					<FileInput
-						onDropPromise={handleCreateProductImg}
-						multiple
-						name="img_ids"
-						accept={{
-							"image/png": ACCEPTED_IMAGE_TYPES,
-						}}
-					/>
-				</FormProvider>
+          <FormInputSelect
+            label="Цвет"
+            name="color_id"
+            options={colors}
+            optionIcon={(option: any) => <ColorBadge color={option.value}/>}
+          />
 
-				<StyledLoadingButton
-					variant="contained"
-					fullWidth
-					type="submit"
-					loading={loading}
-					sx={{ py: "0.8rem", mt: "1rem" }}
-				>
-					{buttonTitle}
-				</StyledLoadingButton>
-			</Box>
-		</Box>
-	);
+          <FormInputSelect label="Обьем" name="amount_id" options={amounts}/>
+
+          <FileInput
+            onDropPromise={handleCreateProductImg}
+            multiple
+            name="img_ids"
+            accept={{
+              "image/png": ACCEPTED_IMAGE_TYPES,
+            }}
+          />
+        </FormProvider>
+
+        <StyledLoadingButton
+          variant="contained"
+          fullWidth
+          type="submit"
+          loading={loading}
+          sx={{py: "0.8rem", mt: "1rem"}}
+        >
+          {buttonTitle}
+        </StyledLoadingButton>
+      </Box>
+    </Box>
+  );
 };
 
 export default ProductForm;

@@ -30,6 +30,19 @@ const theme = createTheme({
       main: '#FF8800',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          // textTransform: 'none',
+        },
+      },
+      defaultProps: {
+        // disableElevation: true,
+      },
+    },
+  },
 })
 
 const AppProviders: React.FC<Props> = ({ children }) => {

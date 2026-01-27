@@ -27,8 +27,9 @@ export class BrandsController {
 
   @Get()
   findAll(@Query() query: BrandFiltersDto): Promise<Brand[]> {
-    if (Object.values(query).length) {
-      return this.brandsService.findAllWithFilters(+query.category_id);
+    const categoryId = Number(query.category_id);
+    if (categoryId && !Number.isNaN(categoryId)) {
+      return this.brandsService.findAllWithFilters(categoryId);
     }
     return this.brandsService.findAll();
   }

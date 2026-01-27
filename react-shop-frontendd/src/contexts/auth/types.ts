@@ -49,4 +49,5 @@ export type AuthContextProps = {
   getUser: GetUser
   setUser: (value: User) => void
   isUserExist: boolean
+  isLoading: boolean
 };

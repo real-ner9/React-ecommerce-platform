@@ -2,58 +2,18 @@ import React from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 
-import IconButton from '@mui/material/IconButton'
-import { AppBar, Button, Toolbar } from '@mui/material'
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 
 import { useAuth } from '../../../contexts/auth/AuthContext'
-import type { ListItem } from '../../../types/list-item';
 import CounterBadge from '../../../components/CounterBadge'
-import Svg from '../../../components/Svg/Svg'
+import {Home, Menu, Heart, ShoppingCart, User} from 'lucide-react'
 import './mobile.scss'
 import CatalogIcon from '../../../components/CatalogIcon/CatalogIcon'
+import ProfileIcon from "../../../components/ProfileIcon/ProfileIcon.tsx";
 
 const FooterMobile: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
-
-  const items: ListItem[] = [
-    {
-      element: (
-        <Button onClick={() => navigate('/')} type="button" color="secondary" sx={{ p: '6px' }}>
-          <Svg text="Главная" className="base-icon" id="house"/>
-        </Button>
-      ),
-      customElement: true,
-    },
-    {
-      element: <CatalogIcon/>,
-      customElement: true,
-    },
-    {
-      element: (
-        <Button onClick={() => navigate('/profile/info')} type="button" color="secondary" sx={{ p: '6px' }}>
-          <Svg text="Меню" className="base-icon" id="menu"/>
-        </Button>
-      ),
-      customElement: true,
-    },
-    {
-      element: (
-        <CounterBadge right={19} count={user.favorite?.length} onClick={() => navigate('/profile/favorite')}>
-          <Svg text="Избранное" fill="none" stroke="black" className="base-icon" id="hearth"/>
-        </CounterBadge>
-      ),
-      customElement: true,
-    },
-    {
-      element: (
-        <CounterBadge right={17} count={user.cart?.length} onClick={() => navigate('/cart')}>
-          <Svg text="Корзина" className="base-icon" id="cart"/>
-        </CounterBadge>
-      ),
-      customElement: true,
-    },
-  ]
 
   return (
     <AppBar
@@ -66,13 +26,35 @@ const FooterMobile: React.FC = () => {
     >
       <div className="container">
         <Toolbar style={{ padding: 'unset' }} className="footer-mobile-content">
-          {items.map(({ element, customElement, onClick }, index) => (
-            customElement ? element : (
-              <IconButton key={index} onClick={onClick} type="button" color="secondary" sx={{ p: '6px' }}>
-                <Svg className="base-icon" id={element as string}/>
-              </IconButton>
-            )
-          ))}
+          <Button onClick={() => navigate('/')} type="button" color="secondary" sx={{ p: '6px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Home size={26} strokeWidth={1.5} color="black" />
+              <Typography sx={{ fontSize: '10px', fontWeight: 400, mt: '2px', color: 'black' }}>Главная</Typography>
+            </Box>
+          </Button>
+
+          <CatalogIcon />
+
+          <Button onClick={() => navigate('/profile/info')} type="button" color="secondary" sx={{ p: '6px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <User size={26} strokeWidth={1.5} color="black" />
+              <Typography sx={{ fontSize: '10px', fontWeight: 400, mt: '2px', color: 'black' }}>Профиль</Typography>
+            </Box>
+          </Button>
+
+          <CounterBadge right={19} count={user.favorite?.length} onClick={() => navigate('/profile/favorite')}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Heart size={26} strokeWidth={1.5} color="black" fill="none" />
+              <Typography sx={{ fontSize: '10px', fontWeight: 400, mt: '2px', color: 'black' }}>Избранное</Typography>
+            </Box>
+          </CounterBadge>
+
+          <CounterBadge right={17} count={user.cart?.length} onClick={() => navigate('/cart')}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <ShoppingCart size={26} strokeWidth={1.5} color="black" />
+              <Typography sx={{ fontSize: '10px', fontWeight: 400, mt: '2px', color: 'black' }}>Корзина</Typography>
+            </Box>
+          </CounterBadge>
         </Toolbar>
       </div>
     </AppBar>

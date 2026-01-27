@@ -1,6 +1,6 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import { ErrorOutline } from '@mui/icons-material'
+import { AlertCircle } from 'lucide-react'
 
 interface Props {
   children: ReactNode
@@ -59,7 +59,7 @@ class ErrorBoundary extends Component<Props, State> {
             p: 3,
           }}
         >
-          <ErrorOutline sx={{ fontSize: 64, color: 'error.main' }} />
+          <AlertCircle size={64} strokeWidth={1.5} color="#d32f2f" />
           <Typography variant="h5" component="h2" textAlign="center">
             Что-то пошло не так
           </Typography>

@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
-import { Stack, Tab, Tabs, useMediaQuery } from '@mui/material'
+import { Stack, Tab, Tabs } from '@mui/material'
 
+import { useMobile } from '../../hooks/useMobile'
 import { type TabProps } from '../../components/TabPanel/TabPanel'
 import './desktop.scss'
 import './mobile.scss'
@@ -39,7 +40,7 @@ const tabs: TabProps[] = [
 ]
 
 const ProfilePage: React.FC = () => {
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
   const location = useLocation()
 
   return (

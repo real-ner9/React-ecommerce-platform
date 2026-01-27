@@ -3,7 +3,7 @@ import {jwtDecode} from 'jwt-decode'
 
 import nigerImg from './assets/images/niger.jpg'
 import { local } from './App'
-import { tokenKey } from './envs/development'
+import { tokenKey } from './env'
 import { type User } from './contexts/auth/types'
 
 const time = 300000; // 5 min

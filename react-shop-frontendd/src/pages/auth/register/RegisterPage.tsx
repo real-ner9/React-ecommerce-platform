@@ -14,7 +14,7 @@ import { useAuth } from "../../../contexts/auth/AuthContext";
 import { StyledLoadingButton } from "../../../components/StyledButtons";
 import { validationErrors } from "../../../helpers/validationErrors";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
-import { siteKey } from "../../../envs/development";
+import { siteKey } from "../../../env";
 
 const registerSchema = object({
 	name: string().max(32, validationErrors.max("имя", 32)),
@@ -45,12 +45,12 @@ const RegisterPage: React.FC = () => {
 	const { register: registerUser } = useAuth();
 	const methods = useForm<RegisterInput>({
 		resolver: zodResolver(registerSchema),
-		// defaultValues: {
-		//   name: '123123',
-		//   email: 'yakikbutovski353@gmail.com',
-		//   password: '123123123',
-		//   passwordConfirm: '123123123',
-		// },
+		defaultValues: {
+		  name: 'admin',
+		  email: 'yakikbutovski353@gmail.com',
+		  password: 'admin123',
+		  passwordConfirm: 'admin123',
+		},
 	});
 
 	const { reset, handleSubmit } = methods;

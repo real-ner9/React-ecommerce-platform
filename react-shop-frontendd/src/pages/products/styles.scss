@@ -5,7 +5,7 @@
 
 .products-content__main {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 4fr;
   grid-gap: 20px;
 }
 
@@ -17,10 +17,10 @@
 }
 
 .products-main__products {
-  width: 100%;
+  //width: 100%;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 1024px) {
   .products-content__main {
     display: block;
   }

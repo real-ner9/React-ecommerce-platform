@@ -1,5 +1,5 @@
 .filters {
-  min-width: 30%;
+  //min-width: 30%;
 }
 
 .filters-mobile__header {
@@ -10,7 +10,7 @@
   z-index: 4;
   position: fixed;
   top: 86px;
-  bottom: 63px;
+  bottom: 0;
   left: 0;
   right: 0;
   overflow: auto;

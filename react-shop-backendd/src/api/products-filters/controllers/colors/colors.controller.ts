@@ -27,8 +27,9 @@ export class ColorsController {
 
   @Get()
   findAll(@Query() query: ColorFiltersDto): Promise<Color[]> {
-    if (Object.values(query).length) {
-      return this.colorsService.findAllWithFilters(+query.category_id);
+    const categoryId = Number(query.category_id);
+    if (categoryId && !Number.isNaN(categoryId)) {
+      return this.colorsService.findAllWithFilters(categoryId);
     }
     return this.colorsService.findAll();
   }

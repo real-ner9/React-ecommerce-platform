@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { any, object, string, type TypeOf } from 'zod'
+import { array, number, object, string, type TypeOf } from 'zod'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,10 +7,10 @@ import { Box, Typography } from "@mui/material";
 
 import { StyledLoadingButton } from "../../../components/StyledButtons";
 import { validationErrors } from "../../../helpers/validationErrors";
-import type {
+import {
 	ACCEPTED_IMAGE_TYPES,
-	CreateFilesPayload,
-} from "../../../contexts/files/types";;
+	type CreateFilesPayload,
+} from "../../../contexts/files/types";
 import { useFiles } from "../../../contexts/files/FilesContext";
 import FileInput from "../../../components/FileInput/FileInput";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
@@ -21,9 +21,7 @@ const categorySchema = object({
 	name: string({ required_error: validationErrors.required("название") })
 		.nonempty(validationErrors.required("название"))
 		.max(30, validationErrors.max("название", 30)),
-	img_ids: any().refine((data) => data.length, {
-		message: validationErrors.required("изображение"),
-	}),
+	img_ids: array(number()).min(1, validationErrors.required("изображение")),
 });
 
 export type CategoryInput = TypeOf<typeof categorySchema>;
@@ -84,8 +82,14 @@ const CategoryForm: React.FC<Props> = ({
 	}, [isSubmitSuccessful, reset]);
 
 	useEffect(() => {
-		console.log("errors", errors);
-	}, [errors]);
+		if (record) {
+			reset({
+				...record,
+				img_ids: record?.img_id ? [record.img_id] : [],
+			});
+		}
+	}, [record, reset]);
+
 
 	return (
 		<Box>

@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { Typography, useMediaQuery } from '@mui/material'
+import { Typography } from '@mui/material'
 
+import { useMobile } from '../../hooks/useMobile'
 import './styles.scss'
 import MainSlider from './MainSlider'
 import MainProducts from './MainProducts'
@@ -13,7 +14,7 @@ import FeedbackForm from './FeedbackForm'
 import MainPageHeader from './MainPageHeader'
 
 const MainPage: React.FC = () => {
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
 
   return (
     <div className="main">

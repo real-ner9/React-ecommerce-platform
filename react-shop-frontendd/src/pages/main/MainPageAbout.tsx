@@ -1,21 +1,12 @@
 import React from 'react'
-
-const textArray = [
-  'Только оригинальные товары по низким ценам от прямых поставщиков',
-  'Ежедневная поддержка наших клиентов',
-  'Мы заботимся о каждом заказе: все посылки тщательно упаковываются, защищаются воздушно-пупырчатой плёнкой и запечатываются клейкой лентой',
-]
+import { shopTexts } from '../../config/shopTexts'
 
 const MainPageAbout: React.FC = () => {
   return (
     <div className="main-page__about">
-      <p>
-        Приветствуем вас в Tattoona-matata shop! Мы – первый крупнейший магазин расходных материалов и тату
-        оборудования в Алтайском крае. В магазине существует гибкая система скидок для постоянных покупателей. Мы
-        заинтересованы в каждом клиенте и рассмотрим любые варианты взаимовыгодного сотрудничества.
-      </p>
+      <p>{shopTexts.about.welcome}</p>
       <div className="main-page__about-bottom">
-        {textArray.map((text, index) => (
+        {shopTexts.about.features.map((text, index) => (
           <p key={index}>{text}</p>
         ))}
       </div>

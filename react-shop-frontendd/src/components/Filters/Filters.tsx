@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { useMediaQuery } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 
+import { useMobile } from '../../hooks/useMobile'
 import './styles.scss'
-import Svg from '../Svg/Svg'
+import { SlidersHorizontal } from 'lucide-react'
 import FiltersForm from './FiltersForm'
 import type { Product } from '../../contexts/products/types';
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 const Filters: React.FC<Props> = ({ products }) => {
   const [open, setOpen] = useState(false)
 
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
 
   const handleOpen = () => {
     setOpen(true)
@@ -37,7 +37,7 @@ const Filters: React.FC<Props> = ({ products }) => {
       {mobile && (
         <div className="filters-mobile__header">
           <IconButton className="filters-button" onClick={handleOpen} type="submit" sx={{ p: '6px' }} aria-label="search">
-            <Svg id="filter" className="filter-icon"/>
+            <SlidersHorizontal size={24} strokeWidth={1.5} />
           </IconButton>
         </div>
       )}

@@ -20,6 +20,7 @@ type Props = {
 export const AuthProvider: React.FC<Props> = ({children}) => {
   const [user, setUser] = useState<User>({} as User);
   const [isUserExist, setIsUserExist] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const handleError = useErrorHandler();
@@ -105,6 +106,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
         local.removeItem(tokenKey);
         setTokenToHeaders(undefined);
       }
+      setIsLoading(false);
       return;
     }
 
@@ -115,6 +117,8 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
       setIsUserExist(true);
     }).catch(() => {
       setIsUserExist(false);
+    }).finally(() => {
+      setIsLoading(false);
     });
   }, [getUser]);
 
@@ -128,6 +132,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
     logout,
     getUser,
     isUserExist,
+    isLoading,
   }), [
     register,
     login,
@@ -137,6 +142,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
     logout,
     getUser,
     isUserExist,
+    isLoading,
   ]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

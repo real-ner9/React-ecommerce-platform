@@ -15,16 +15,21 @@
   position: relative;
   align-items: center;
   height: 38px;
-  border: 1px solid $border;
-  //box-shadow: none;
   display: flex;
   padding: 2px 4px;
+  border-radius: $border-radius;
+  //box-shadow: $shadow;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   &.open {
     border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    box-shadow: $shadow;
+    z-index: 10;
+  }
+
+  button {
+    color: black;
   }
 }
 
@@ -33,10 +38,10 @@
   max-height: 400px;
   overflow: auto;
   top: 100%;
-  left: -1px;
-  right: -1px;
+  left: 0;
+  right: 0;
   background: white;
-  border: 1px solid $border;
+  //border: $border-width solid $border;
   border-top: none;
   z-index: 1;
   box-shadow: $shadow;

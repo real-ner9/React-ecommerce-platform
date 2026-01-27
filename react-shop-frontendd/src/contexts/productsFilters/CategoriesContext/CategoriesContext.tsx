@@ -20,8 +20,7 @@ export const CategoriesProvider: React.FC<Props> = ({ children }) => {
     try {
       const data = await axios.get<Category[]>(`${requestUrl}/categories`);
       if (data) {
-        console.log(data)
-        // setCategories(data);
+        setCategories(data.data);
       }
     }
     catch (error) {
@@ -74,9 +73,6 @@ export const CategoriesProvider: React.FC<Props> = ({ children }) => {
     getCategories();
   }, [])
 
-  useEffect(() => {
-    console.log(categories)
-  }, [categories]);
 
   const value = {
     getCategories,

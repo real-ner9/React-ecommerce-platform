@@ -1,21 +1,20 @@
 import React from 'react'
-import truckSvg from '../../assets/images/truck.svg'
-import deliverySvg from '../../assets/images/delivery.svg'
-import paySvg from '../../assets/images/pay.svg'
+import { MapPin, Package, CreditCard } from 'lucide-react'
+import { shopTexts } from '../../config/shopTexts'
 
 const list = [
   {
-    text: 'Самовывоз по адресу Алтайский край, г. Барнаул, ул. Гоголя 38',
-    src: truckSvg,
+    text: shopTexts.delivery.pickup,
+    icon: <MapPin size={40} strokeWidth={1.5} />,
   },
   {
-    text: 'Бесплатная доставка по г. Барнаул Доставка СДЭК по всей России (рассчитывается индивидуально)',
-    src: deliverySvg,
+    text: shopTexts.delivery.shipping,
+    icon: <Package size={40} strokeWidth={1.5} />,
   },
   {
-    boldText: 'У нас возможна оплата переводом или наличными.',
-    text: 'После оформления заказа вам позвонит/напишет менеджер и предоставит все варианты оплаты',
-    src: paySvg,
+    boldText: shopTexts.delivery.payment.bold,
+    text: shopTexts.delivery.payment.text,
+    icon: <CreditCard size={40} strokeWidth={1.5} />,
   },
 ]
 
@@ -33,7 +32,7 @@ const MainPageDelivery: React.FC = () => {
             </p>
           </div>
 
-          <img src={item.src} alt=""/>
+          {item.icon}
         </div>
       ))}
     </div>

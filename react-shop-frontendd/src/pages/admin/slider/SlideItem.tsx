@@ -3,7 +3,7 @@ import React from 'react'
 import IconButton from '@mui/material/IconButton'
 
 import type { EditSlidePayload, Slide } from '../../../contexts/slider/types';
-import Svg from '../../../components/Svg/Svg'
+import { Pencil, Trash2 } from 'lucide-react'
 import SlideLayout from '../../../components/SlideLayout/SlideLayout'
 import { useSlider } from '../../../contexts/slider/SliderContext'
 import StyledModal from '../../../components/StyledModal/StyledModal'
@@ -46,7 +46,7 @@ const SlideItem: React.FC<Props> = ({ slide }) => {
         <StyledModal
           icon={
             <IconButton type="button" sx={{ p: '6px' }}>
-              <Svg id="pencil" width={30} height={30}/>
+              <Pencil size={24} strokeWidth={1.5} />
             </IconButton>
           }
           title="Редактировать слайд"
@@ -65,7 +65,7 @@ const SlideItem: React.FC<Props> = ({ slide }) => {
           title="Удалить слайд"
           icon={
             <IconButton className="product-item__delete" type="button" sx={{ p: '6px' }}>
-              <Svg id="trash" width={30} height={30}/>
+              <Trash2 size={24} strokeWidth={1.5} />
             </IconButton>
           }
           text="Вы точно хотите удалить слайд?"

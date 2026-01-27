@@ -1,7 +1,8 @@
 import React from 'react'
 
 import './styles.scss'
-import { Stack, Tab, Tabs, useMediaQuery } from '@mui/material'
+import { Stack, Tab, Tabs } from '@mui/material'
+import { useMobile } from '../../hooks/useMobile'
 import { type TabProps } from '../../components/TabPanel/TabPanel'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
@@ -42,7 +43,7 @@ const tabs: TabProps[] = [
 
 const AdminPage: React.FC = () => {
   const location = useLocation()
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
 
   return (
     <div className="admin">

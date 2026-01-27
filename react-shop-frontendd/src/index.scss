@@ -35,7 +35,7 @@ body {
 }
 
 .container {
-  max-width: 1250px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 10px;
 }
@@ -74,9 +74,9 @@ h1 {
 
 .bordered-box {
   padding: 10px 20px;
-  border: 1px solid $border;
+  //border: $border-width solid $border;
   border-radius: $border-radius;
-  //box-shadow: $shadow;
+  box-shadow: $shadow2;
   background: white;
 }
 
@@ -90,7 +90,7 @@ h1 {
 }
 
 .header + div {
-  padding-top: 134px;
+  padding-top: 20px;
   padding-bottom: 104px;
 }
 
@@ -137,7 +137,70 @@ h1 {
   opacity: 0.5;
 }
 
-@media screen and (max-width: 750px) {
+.width-full {
+  max-width: 100%;
+}
+
+// Main slider (Wildberries-style peek effect)
+//.main-slider {
+//  position: relative;
+//  margin: 0 -10px;
+//  --swiper-navigation-color: #000;
+//  --swiper-navigation-size: 18px;
+//
+//  .swiper-wrapper {
+//    align-items: center;
+//  }
+//
+//  .swiper-slide {
+//    opacity: 0.5;
+//    transition: opacity 0.3s, transform 0.3s;
+//    transform: scale(0.92);
+//    border-radius: $border-radius;
+//    overflow: hidden;
+//
+//    &-active {
+//      opacity: 1;
+//      transform: scale(1);
+//    }
+//  }
+//
+//  .slide-layout {
+//    border-radius: $border-radius;
+//  }
+//
+//  .swiper-button-prev,
+//  .swiper-button-next {
+//    width: 44px !important;
+//    height: 80% !important;
+//    top: 10% !important;
+//    margin-top: 0 !important;
+//    background-color: rgba(255, 255, 255, 0.9) !important;
+//    border-radius: $border-radius !important;
+//    transition: background-color 0.2s !important;
+//    color: #000 !important;
+//
+//    &:hover {
+//      background-color: #fff !important;
+//    }
+//
+//    &::after {
+//      font-size: 18px !important;
+//      color: #000 !important;
+//      font-weight: 600 !important;
+//    }
+//  }
+//
+//  .swiper-button-prev {
+//    left: 12px !important;
+//  }
+//
+//  .swiper-button-next {
+//    right: 12px !important;
+//  }
+//}
+
+@media screen and (max-width: 1024px) {
   .header + div {
     padding-top: 100px;
     padding-bottom: 80px;

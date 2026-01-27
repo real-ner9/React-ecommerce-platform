@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { Box, Modal } from '@mui/material'
 
 import './styles.scss'
-import Svg from '../Svg/Svg'
+import { X } from 'lucide-react'
 import IconButton from '@mui/material/IconButton'
 import type { HandleClickEmpty, HandleClickOnElement } from '../../types/types';
 const style = {
@@ -58,7 +58,7 @@ const StyledModal: React.FC<Props> = ({ title, children, className, icon }) => {
             color="secondary"
             sx={{ p: '6px', position: 'absolute' }}
           >
-            <Svg id="cross"/>
+            <X size={24} strokeWidth={1.5} />
           </IconButton>
           {children(handleClose)}
         </Box>

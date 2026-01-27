@@ -15,7 +15,7 @@ async function bootstrap(): Promise<void> {
     const configService = app.get(ConfigService);
     const appConfig = configService.get<AppConfiguration>('app');
     const nodeEnv = configService.get<string>('NODE_ENV', 'development');
-    const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:2001');
+    const frontendUrl = configService.get<string>('APP_URL', 'http://localhost:2001');
 
     if (!appConfig) {
       throw new Error('Application configuration is not available');

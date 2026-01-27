@@ -52,7 +52,7 @@ const CategoriesList: React.FC<Props> = ({ disabled, mobile = false, children })
           imgSrc={imgSrc(category.img_id)}
           name={category.name}
         >
-          {children}
+          {children ? children(category) : null}
         </LayoutComponent>
       ))}
       <LayoutComponent
@@ -67,9 +67,7 @@ const CategoriesList: React.FC<Props> = ({ disabled, mobile = false, children })
             }).toString(),
           });
         }}
-      >
-        {children}
-      </LayoutComponent>
+      />
     </div>
   );
 };

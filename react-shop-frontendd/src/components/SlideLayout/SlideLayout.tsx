@@ -18,7 +18,8 @@ const SlideLayout: React.FC<Props> = ({ slide, children }) => {
   }
 
   return (
-    <div className="slide-layout" onClick={onClick} style={{ backgroundImage: `url(${imgSrc(img_id)})` }}>
+    <div className="slide-layout" onClick={onClick}>
+      <img src={imgSrc(img_id)} alt="slide img"/>
       {children}
     </div>
   )

@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import './desktop.scss'
 import Logo from '../../../components/Logo'
 import ContactsList from '../../../components/ContactsList/ContactsList'
+import { shopTexts } from '../../../config/shopTexts'
 
 const FooterDesktop: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ const FooterDesktop: React.FC = () => {
             <Link to="/profile/about-delivery">Доставка</Link>
           </div>
           <div className="footer-column">
-            <a href="tel:89635207570">+7 963 520 7570</a>
+            <a href={shopTexts.contacts.phoneHref}>{shopTexts.contacts.phone}</a>
 
             <div className="footer-column__socials">
               <ContactsList />

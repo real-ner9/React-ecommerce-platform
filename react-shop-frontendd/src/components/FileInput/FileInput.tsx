@@ -34,7 +34,7 @@ const FileInput: FC<IFileInputProps> = (props) => {
 		watch,
 	} = useFormContext();
 
-	const fileIds: number[] = watch(name);
+	const fileIds: number[] = watch(name) ?? [];
 
 	const onDrop = useCallback(
 		(files: File[]) => {

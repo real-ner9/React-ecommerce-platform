@@ -27,22 +27,24 @@ const ProductLayout: React.FC<Props> = ({ product, headerContent, footerContent,
   }
 
   return (
-    <div className="product-layout">
-      <ProductLayoutSlider
-        ids={img_ids}
-        onClick={goToProduct}
-      />
+    <div className="product-layout product-card">
+      <div className="product-layout-main">
+        <ProductLayoutSlider
+          ids={img_ids}
+          onClick={goToProduct}
+        />
 
-      <div className="product-layout-header">
+        <div className="product-layout-header">
+          <Typography className="product-layout__price" component="h6" variant="h5" fontWeight={600}>
+            {formatPrice(price)}
+          </Typography>
+          {headerContent}
+        </div>
+
         <Typography className="product-layout__name" component="h6" fontWeight={500}>
           {name}
         </Typography>
-        {headerContent}
       </div>
-
-      <Typography className="product-layout__price" component="h6" variant="h5" fontWeight={600}>
-        {formatPrice(price)}
-      </Typography>
 
       <div className="product-layout-footer">{footerContent}</div>
     </div>

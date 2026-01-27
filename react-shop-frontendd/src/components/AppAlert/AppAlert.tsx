@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Alert, Collapse, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { X } from 'lucide-react'
 
 import { useAlert } from '../../contexts/alert/AlertContext'
 import './styles.scss'
@@ -28,7 +28,7 @@ const AppAlert = () => {
                 hideAlert()
               }}
             >
-              <CloseIcon color="secondary" fontSize="inherit"/>
+              <X size={20} strokeWidth={1.5} />
             </IconButton>
           }
           sx={{ mb: 2 }}

@@ -1,11 +1,14 @@
-import React from 'react'
-import { Carousel } from 'react-responsive-carousel'
+import { useRef } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper/modules'
+import type { Swiper as SwiperType } from 'swiper'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { imgSrc } from '../../helpers/imgSrc'
 import emptyImg from '../../assets/images/empty-product-img.png'
 import classNames from 'classnames'
 import ProductLayoutSlide from './ProductLayoutSlide'
-import { IconButton } from '@mui/material'
-import Svg from '../Svg/Svg'
+
+import 'swiper/swiper-bundle.css'
 
 type Props = {
   ids: number[]
@@ -13,46 +16,46 @@ type Props = {
   className?: string
 }
 
-const ProductLayoutSlider: React.FC<Props> = ({ ids, onClick, className }) => {
-  const getSlides = () => {
-    const sliderImages: string[] = ids?.length ? ids.map(id => imgSrc(id)) : [emptyImg]
-
-    return sliderImages.map((src, index) => <ProductLayoutSlide key={index} src={src}/>)
-  }
+const ProductLayoutSlider = ({ ids, onClick, className }: Props) => {
+  const sliderImages: string[] = ids?.length ? ids.map(id => imgSrc(id)) : [emptyImg]
+  const hasMultipleSlides = sliderImages.length > 1
+  const swiperRef = useRef<SwiperType | null>(null)
 
   return (
     <div className={classNames('product-layout-slider__wrapper', className)}>
-      <Carousel
-        onClickItem={onClick}
-        showStatus={false}
-        renderArrowNext={(clickHandler, hasNext) => (
-          hasNext && <IconButton
-            className="slider-arrow slider-arrow__next"
-            onClick={clickHandler}
-            type="button"
-            color="secondary"
-            sx={{ p: '0' }}
-          >
-            <Svg className="slider-arrow__img" id="slider-arrow"/>
-          </IconButton>
-        )}
-        renderArrowPrev={(clickHandler, hasPrev) => (
-          hasPrev && <IconButton
-            className="slider-arrow slider-arrow__prev"
-            onClick={clickHandler}
-            type="button"
-            color="secondary"
-            sx={{ p: '0' }}
-          >
-            <Svg className="slider-arrow__img" id="slider-arrow"/>
-          </IconButton>
-        )}
-        className="product-layout-slider"
-        showThumbs={false}
-        showArrows={true}
+      <Swiper
+        modules={[Pagination]}
+        slidesPerView={1}
+        spaceBetween={0}
+        pagination={hasMultipleSlides ? { clickable: true } : false}
+        loop={hasMultipleSlides}
+        onSwiper={(swiper) => { swiperRef.current = swiper }}
+        onClick={onClick}
       >
-        {getSlides()}
-      </Carousel>
+        {sliderImages.map((src, index) => (
+          <SwiperSlide key={index}>
+            <ProductLayoutSlide src={src} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      {hasMultipleSlides && (
+        <>
+          <button
+            className="slider-arrow slider-arrow--prev"
+            type="button"
+            onClick={() => swiperRef.current?.slidePrev()}
+          >
+            <ChevronLeft size={16} color="#000" strokeWidth={2.5} />
+          </button>
+          <button
+            className="slider-arrow slider-arrow--next"
+            type="button"
+            onClick={() => swiperRef.current?.slideNext()}
+          >
+            <ChevronRight size={16} color="#000" strokeWidth={2.5} />
+          </button>
+        </>
+      )}
     </div>
   )
 }

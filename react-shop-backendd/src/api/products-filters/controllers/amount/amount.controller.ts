@@ -27,8 +27,9 @@ export class AmountController {
 
   @Get()
   findAll(@Query() query: AmountFiltersDto): Promise<Amount[]> {
-    if (Object.values(query).length) {
-      return this.amountService.findAllWithFilters(+query.category_id);
+    const categoryId = Number(query.category_id);
+    if (categoryId && !Number.isNaN(categoryId)) {
+      return this.amountService.findAllWithFilters(categoryId);
     }
     return this.amountService.findAll();
   }

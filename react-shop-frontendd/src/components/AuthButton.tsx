@@ -8,7 +8,7 @@ const AuthButton = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <StyledButton onClick={() => navigate('/register')}>Сначала зарегистрируйтесь</StyledButton>
+      <StyledButton onClick={() => navigate('/login')}>Войти</StyledButton>
     </div>
   )
 }

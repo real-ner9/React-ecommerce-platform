@@ -2,11 +2,11 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '@mui/material/IconButton'
-import { Box, Toolbar } from '@mui/material'
+import {Box, Button, Toolbar, Typography} from '@mui/material'
+import {Heart, ShoppingCart, User} from 'lucide-react'
 
 import type { ListItem } from '../../../types/list-item';
 import SearchField from '../../../components/SearchField/SearchField'
-import Svg from '../../../components/Svg/Svg'
 import CounterBadge from '../../../components/CounterBadge'
 import Logo from '../../../components/Logo'
 import ProfileIcon from '../../../components/ProfileIcon/ProfileIcon'
@@ -23,22 +23,27 @@ const HeaderDesktop: React.FC = () => {
 
   const items: ListItem[] = [
     {
-      element: <SearchField/>,
+      element: (
+        <Button onClick={() => navigate('/profile/info')} type="button" color="secondary" sx={{ p: '6px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <User size={26} strokeWidth={1.5} color="black" />
+            <Typography sx={{ fontSize: '11px', fontWeight: 400, mt: '5px', color: 'black' }}>Профиль</Typography>
+          </Box>
+        </Button>
+      ),
       customElement: true,
-      grow: 4,
     },
     {
       element: <CatalogIcon />,
       customElement: true,
     },
     {
-      element: <ProfileIcon />,
-      customElement: true,
-    },
-    {
       element: (
         <CounterBadge right={19} count={favoriteProducts.length} onClick={() => navigate('/profile/favorite')}>
-          <Svg text="Избранное" fill="none" stroke="black" className="base-icon" id="hearth" />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Heart size={26} strokeWidth={1.7} color="black" />
+            <Typography sx={{ fontSize: '11px', fontWeight: 400, mt: '5px', color: 'black' }}>Избранное</Typography>
+          </Box>
         </CounterBadge>
       ),
       customElement: true,
@@ -46,7 +51,10 @@ const HeaderDesktop: React.FC = () => {
     {
       element: (
         <CounterBadge count={cart.items?.length} onClick={() => navigate('/cart')}>
-          <Svg text="Корзина" className="base-icon" id="cart" />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <ShoppingCart size={26} strokeWidth={1.5} color="black" />
+            <Typography sx={{ fontSize: '11px', fontWeight: 400, mt: '5px', color: 'black' }}>Корзина</Typography>
+          </Box>
         </CounterBadge>
       ),
       customElement: true,
@@ -54,21 +62,23 @@ const HeaderDesktop: React.FC = () => {
   ]
 
   return (
-    <Toolbar style={{ padding: 'unset' }}>
-      <Logo />
+    <div className="header-inner" style={{ padding: 'unset' }}>
+      <Box className="header-logo">
+        <Logo />
+      </Box>
 
       <ContactsList />
 
-      {items.map(({ element, customElement, onClick, grow }, index) => (
+      <Box className="header-search" sx={{}}>
+        <SearchField />
+      </Box>
+
+      {items.map(({ element, grow }, index) => (
         <Box className="header-item" key={index} sx={{ flexGrow: grow || 0 }}>
-          {customElement ? element : (
-            <IconButton onClick={onClick} type="button" color="secondary" sx={{ p: '6px' }}>
-              <Svg className="base-icon" id={element as string} />
-            </IconButton>
-          )}
+          {element}
         </Box>
       ))}
-    </Toolbar>
+    </div>
   )
 }
 

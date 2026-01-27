@@ -18,35 +18,36 @@ const TabInfo = () => {
       </Typography>
 
       {isUserExist ? (
-        <ListWithTitle
-          options={[
-            {
-              title: 'Имя',
-              text: user.name,
-            },
-            {
-              title: 'Почта',
-              text: (
-                <>
-                  {user.email}
-                  {/*{user.isEmailConfirmed ? 'Почта подтверждена' : <StyledButton onClick={() => navigate('')}>Подтвердить почту</StyledButton>}*/}
-                </>
-              ),
-            },
-            // {
-            //   title: 'Телефон',
-            //   text: 'телефон',
-            // },
-          ]}
-          className="bordered-box"
-        />
+        <div className="bordered-box">
+          <ListWithTitle
+            options={[
+              {
+                title: 'Имя',
+                text: user.name,
+              },
+              {
+                title: 'Почта',
+                text: (
+                  <>
+                    {user.email}
+                    {/*{user.isEmailConfirmed ? 'Почта подтверждена' : <StyledButton onClick={() => navigate('')}>Подтвердить почту</StyledButton>}*/}
+                  </>
+                ),
+              },
+              // {
+              //   title: 'Телефон',
+              //   text: 'телефон',
+              // },
+            ]}
+          />
+
+          <div className="profile-info__toolbar">
+            {user.role === 'Admin' && <StyledButton fullWidth variant="contained" onClick={() => navigate('/admin/products')}>Админка</StyledButton>}
+
+            {isUserExist && <StyledButton fullWidth variant="contained" onClick={logout}>Выйти</StyledButton>}
+          </div>
+        </div>
       ) : <AuthButton />}
-
-      <div className="profile-info__toolbar">
-        {user.role === 'Admin' && <StyledButton fullWidth variant="contained" onClick={() => navigate('/admin/products')}>Админка</StyledButton>}
-
-        {isUserExist && <StyledButton fullWidth variant="contained" onClick={logout}>Выйти</StyledButton>}
-      </div>
     </div>
   )
 }

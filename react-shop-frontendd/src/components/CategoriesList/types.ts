@@ -6,9 +6,10 @@ export type BaseProps = {
   children?: (category: Category) => React.ReactElement
 }
 
-export type CategoryLayoutProps = BaseProps & {
+export type CategoryLayoutProps = {
   id?: number
   name: string
   imgSrc: string
   onClick: NavigateToCategory
+  children?: React.ReactElement | null
 }

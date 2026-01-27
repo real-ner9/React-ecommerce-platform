@@ -2,7 +2,7 @@ import React from 'react'
 
 import IconButton from '@mui/material/IconButton'
 
-import Svg from '../../../components/Svg/Svg'
+import { Pencil, Trash2 } from 'lucide-react'
 import StyledModal from '../../../components/StyledModal/StyledModal'
 import StyledDialog from '../../../components/StyledDialog/StyledDialog'
 import ColorsForm, { type ColorInput } from './ColorsForm'
@@ -44,7 +44,7 @@ const ColorsItem: React.FC<Props> = ({ color, loadColors }) => {
       <StyledModal
         icon={
           <IconButton type="button" sx={{ p: '6px' }}>
-            <Svg id="pencil" width={30} height={30}/>
+            <Pencil size={24} strokeWidth={1.5} />
           </IconButton>
         }
         title="Редактировать цвет"
@@ -62,7 +62,7 @@ const ColorsItem: React.FC<Props> = ({ color, loadColors }) => {
       <StyledDialog
         icon={
           <IconButton className="product-item__delete" type="button" sx={{ p: '6px' }}>
-            <Svg id="trash" width={30} height={30}/>
+            <Trash2 size={24} strokeWidth={1.5} />
           </IconButton>
         }
         title="Удалить цвет"

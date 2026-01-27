@@ -1,39 +1,52 @@
 import React from 'react'
-import type { ListItem } from '../../types/list-item';
 import IconButton from '@mui/material/IconButton'
-import Svg from '../Svg/Svg'
 import { Box } from '@mui/material'
+import { siVk, siInstagram, siTelegram } from 'simple-icons'
+import { shopTexts } from '../../config/shopTexts'
 
-const items: ListItem[] = [
+type SimpleIconProps = {
+  icon: { path: string }
+  size?: number
+}
+
+const SimpleIcon: React.FC<SimpleIconProps> = ({ icon, size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d={icon.path} />
+  </svg>
+)
+
+type ContactItem = {
+  icon: React.ReactNode
+  to: string
+}
+
+const items: ContactItem[] = [
   {
-    element: 'vk',
-    to: 'https://vk.com/club219176295',
+    icon: <SimpleIcon icon={siVk} />,
+    to: shopTexts.contacts.vk,
   },
   {
-    element: 'instagram',
-    to: 'https://instagram.com/tattoonamatata.shop?igshid=YmMyMTA2M2Y=',
+    icon: <SimpleIcon icon={siInstagram} />,
+    to: shopTexts.contacts.instagram,
   },
   {
-    element: 'telegram',
-    to: 'https://t.me/tattoona_matata',
+    icon: <SimpleIcon icon={siTelegram} />,
+    to: shopTexts.contacts.telegram,
   },
 ]
 
 const ContactsList: React.FC = () => {
-  const onClick = (to?: string) => {
-    if (!to) return
+  const onClick = (to: string) => {
     window.open(to, '_blank')
   }
 
   return (
     <>
-      {items.map(({ element, to, customElement }, index) => (
+      {items.map(({ icon, to }, index) => (
         <Box className="header-item" key={index} sx={{ flexGrow: 0 }}>
-          {customElement ? element : (
-            <IconButton key={index} onClick={() => onClick(to)} type="button" color="secondary" sx={{ p: '6px' }}>
-              <Svg className="base-icon" id={element as string}/>
-            </IconButton>
-          )}
+          <IconButton onClick={() => onClick(to)} type="button" color="secondary" sx={{ p: '6px' }}>
+            {icon}
+          </IconButton>
         </Box>
       ))}
     </>

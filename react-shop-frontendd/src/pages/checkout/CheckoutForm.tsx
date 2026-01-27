@@ -3,8 +3,9 @@ import { object, string, type TypeOf } from "zod";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
+import { useMobile } from "../../hooks/useMobile";
 import { useAuth } from "../../contexts/auth/AuthContext";
 import { useOrders } from "../../contexts/orders/OrdersContext";
 import type { CreateOrderPayload } from "../../contexts/orders/types";
@@ -18,6 +19,7 @@ import "./styles.scss";
 import { formatPrice } from "../../helpers/formatters/formatPrice";
 import { removePhoneMask } from "../../helpers/formatters/formatPhone";
 import { local } from "../../App";
+import { shopTexts } from "../../config/shopTexts";
 
 const checkoutSchema = object({
 	// user data
@@ -66,7 +68,7 @@ type CheckoutInput = TypeOf<typeof checkoutSchema>;
 const CheckoutForm: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const mobile = useMediaQuery("(max-width:750px)");
+	const mobile = useMobile();
 	const { createOrder } = useOrders();
 	const { user, getUser, isUserExist } = useAuth();
 	const { cart, getLocalCartItems } = useCart();
@@ -159,8 +161,8 @@ const CheckoutForm: React.FC = () => {
 				</Typography>
 
 				<div className="checkout-form__delivery-description">
-					<p>Доставка по барнаулу или самовывоз - бесплатно.</p>
-					<p>Доставка в другие регионы обсуждается индивидуально.</p>
+					<p>{shopTexts.delivery.checkoutLocal}</p>
+					<p>{shopTexts.delivery.checkoutOther}</p>
 				</div>
 
 				<Stack

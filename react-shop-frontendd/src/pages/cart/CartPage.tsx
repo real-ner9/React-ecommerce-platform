@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { Stack, Typography, useMediaQuery } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 
+import { useMobile } from '../../hooks/useMobile'
 import { useCart } from '../../contexts/cart/CartContext'
 import CartItem from './CartItem'
 import Spinner from '../../components/Spinner/Spinner'
@@ -10,7 +11,7 @@ import CartTotal from './CartTotal'
 import CatalogButton from '../../components/CatalogButton'
 
 const CartPage: React.FC = () => {
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
   const { cart, loading } = useCart()
 
   return (

@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 
 import type { Product } from '../../../contexts/products/types';
 import { useProducts } from '../../../contexts/products/ProductsContext'
-import Svg from '../../../components/Svg/Svg'
+import { Pencil, Trash2 } from 'lucide-react'
 import { useAuth } from '../../../contexts/auth/AuthContext'
 import ProductLayout from '../../../components/ProductLayout/ProductLayout'
 import StyledDialog from '../../../components/StyledDialog/StyledDialog'
@@ -50,7 +50,7 @@ const ProductItem: React.FC<Props> = ({ product, loadProducts }) => {
           <StyledModal
             icon={
               <IconButton type="button" sx={{ p: '6px' }}>
-                <Svg id="pencil" width={30} height={30}/>
+                <Pencil size={24} strokeWidth={1.5} />
               </IconButton>
             }
             title="Редактировать товар"
@@ -69,7 +69,7 @@ const ProductItem: React.FC<Props> = ({ product, loadProducts }) => {
             title="Удалить товар"
             icon={
               <IconButton className="product-item__delete" type="button" sx={{ p: '6px' }}>
-                <Svg id="trash" width={30} height={30}/>
+                <Trash2 size={24} strokeWidth={1.5} />
               </IconButton>
             }
             text="Вы точно хотите удалить товар?"

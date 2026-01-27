@@ -1,6 +1,6 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
-import Svg from './Svg/Svg'
+import { ShoppingCart } from 'lucide-react'
 import { Badge, type BadgeProps, styled } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
@@ -26,7 +26,7 @@ const CartIcon = () => {
         badgeContent={4}
         color="primary"
       >
-        <Svg className="base-icon" id="cart" />
+        <ShoppingCart size={24} strokeWidth={1.5} />
       </StyledBadge>
     </IconButton>
   )

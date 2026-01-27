@@ -47,7 +47,7 @@
 }
 
 .order-layout__product {
-  border: 1px solid $border;
+  border: $border-width solid $border;
   display: flex;
   justify-content: space-between;
   padding: 10px 10px 5px 10px;

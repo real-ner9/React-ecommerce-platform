@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material'
 
 import type { AddToFavoritePayload } from '../../contexts/favorite/types';
 import { useFavorite } from '../../contexts/favorite/FavoriteContext'
-import Svg from '../Svg/Svg'
+import { Heart } from 'lucide-react'
 import { useAuth } from '../../contexts/auth/AuthContext'
 import { useAlert } from '../../contexts/alert/AlertContext'
 import type { ShowAlertPayload } from '../../contexts/alert/types';
@@ -46,12 +46,11 @@ const AddToFavorite: React.FC<Props> = ({ product_id, user_id, isFavorite }) => 
       type="button"
       sx={{ p: '6px' }}
     >
-      <Svg
+      <Heart
+        size={24}
+        strokeWidth={1.5}
         stroke={isFavorite ? theme.palette.primary.main : 'black'}
         fill={isFavorite ? theme.palette.primary.main : 'none'}
-        id="hearth"
-        width={30}
-        height={30}
       />
     </IconButton>
   )

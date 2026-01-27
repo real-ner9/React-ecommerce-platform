@@ -18,8 +18,8 @@ import { UserModule } from '../user/user.module';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get('JWT_KEY'),
-        signOptions: { expiresIn: config.get('JWT_EXPIRES') },
+        secret: config.get('JWT_SECRET'),
+        signOptions: { expiresIn: config.get('JWT_EXPIRES_IN') },
       }),
     }),
     TypeOrmModule.forFeature([User]),

@@ -11,12 +11,10 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 
-import Svg from "../Svg/Svg";
+import { Search } from 'lucide-react'
 import Spinner from "../Spinner/Spinner";
 import SearchFieldItem from "./SearchFieldItem";
 import type {Product} from "../../contexts/products/types";
-
-;
 import {useProducts} from "../../contexts/products/ProductsContext";
 import "./style.scss";
 
@@ -96,10 +94,8 @@ const SearchField: React.FC = () => {
 
   return (
     <ClickAwayListener onClickAway={handleClose}>
-      <Paper
-        component="form"
+      <form
         className={classNames("search-field", {open: open})}
-        sx={{boxShadow: "none"}}
         onFocus={handleOpen}
         onSubmit={handleSubmit(onSubmitHandler)}
         noValidate
@@ -114,7 +110,7 @@ const SearchField: React.FC = () => {
         {/*  <Svg id={'cross'} className="svg-cross"/>*/}
         {/*</IconButton>*/}
         <IconButton type="submit" sx={{p: "6px"}} aria-label="search">
-          <Svg id="search" className="svg-search"/>
+          <Search size={24} strokeWidth={1.5} />
         </IconButton>
         {open && (
           <div className="search-field__container">
@@ -135,7 +131,7 @@ const SearchField: React.FC = () => {
             </div>
           </div>
         )}
-      </Paper>
+      </form>
     </ClickAwayListener>
   );
 };

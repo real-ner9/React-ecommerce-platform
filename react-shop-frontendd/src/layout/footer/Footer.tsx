@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { useMediaQuery } from '@mui/material'
-
+import { useMobile } from '../../hooks/useMobile'
 import FooterMobile from './mobile/FooterMobile'
 import FooterDesktop from './desktop/FooterDesktop'
 import './styles.scss'
 
 const Footer: React.FC = () => {
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
 
   return mobile ? <FooterMobile /> : <FooterDesktop />
 }

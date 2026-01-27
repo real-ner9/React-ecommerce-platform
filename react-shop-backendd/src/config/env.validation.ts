@@ -1,41 +1,38 @@
 import Joi from 'joi';
 
 export const environmentValidationSchema = Joi.object({
-  NODE_ENV: Joi.string()
-    .valid('development', 'production', 'test')
-    .default('development'),
-  PORT: Joi.number().integer().min(0).default(3000),
-  
-  // Database configuration
-  DATABASE_HOST: Joi.string().required(),
-  DATABASE_PORT: Joi.number().integer().min(0).default(5432),
-  DATABASE_NAME: Joi.string().required(),
-  DATABASE_USER: Joi.string().required(),
-  DATABASE_PASSWORD: Joi.string().required(),
-  DATABASE_SCHEMA: Joi.string().default('public'),
-  DATABASE_SSL: Joi.string().valid('true', 'false').default('false'),
-  DATABASE_SSL_REJECT_UNAUTHORIZED: Joi.string()
-    .valid('true', 'false')
-    .default('true'),
-  TYPEORM_SYNCHRONIZE: Joi.string().valid('true', 'false').default('false'),
-  TYPEORM_LOGGING: Joi.string().valid('true', 'false').default('false'),
-  
-  // JWT configuration
-  JWT_KEY: Joi.string().required(),
-  JWT_EXPIRES: Joi.string().default('24h'),
-  
-  // Email configuration (optional)
-  EMAIL_SERVICE: Joi.string().optional(),
-  EMAIL_HOST: Joi.string().optional(),
-  EMAIL_PORT: Joi.number().integer().min(0).optional(),
-  EMAIL_USER: Joi.string().optional(),
-  EMAIL_PASSWORD: Joi.string().optional(),
-  EMAIL_FROM: Joi.string().email().optional(),
-  
-  // Payment configuration (optional)
+  NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+  PORT: Joi.number().default(3000),
+
+  // Database
+  DATABASE_URL: Joi.string().uri({ scheme: ['postgres', 'postgresql'] }).required(),
+  DB_SYNC: Joi.boolean().default(false),
+  DB_LOGGING: Joi.boolean().default(false),
+
+  // Auth
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRES_IN: Joi.string().default('1d'),
+  JWT_VERIFICATION_SECRET: Joi.string().required(),
+  JWT_VERIFICATION_EXPIRES_IN: Joi.string().default('1d'),
+
+  // URLs
+  APP_URL: Joi.string().uri().default('http://localhost:2001'),
+
+  // Files
+  UPLOADS_DIR: Joi.string().default('./uploads'),
+
+  // Email (optional)
+  SMTP_HOST: Joi.string().optional(),
+  SMTP_PORT: Joi.number().optional(),
+  SMTP_USER: Joi.string().optional(),
+  SMTP_PASS: Joi.string().optional(),
+
+  // Payment (optional)
   YOOKASSA_SHOP_ID: Joi.string().optional(),
   YOOKASSA_SECRET_KEY: Joi.string().optional(),
-  
-  // Frontend URL for CORS
-  FRONTEND_URL: Joi.string().uri().default('http://localhost:2001'),
+
+  // Docker Compose (not used by app, but validated)
+  POSTGRES_USER: Joi.string().optional(),
+  POSTGRES_PASSWORD: Joi.string().optional(),
+  POSTGRES_DB: Joi.string().optional(),
 });

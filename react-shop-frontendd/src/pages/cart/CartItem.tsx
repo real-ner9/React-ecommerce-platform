@@ -1,11 +1,12 @@
 import React from 'react'
 
 import IconButton from '@mui/material/IconButton'
-import { Stack, useMediaQuery } from '@mui/material'
+import { Stack } from '@mui/material'
 
+import { useMobile } from '../../hooks/useMobile'
 import type { CartItem as CartItemType } from '../../contexts/cart/types';
 import CartCounter from '../../components/CartCounter/CartCounter'
-import Svg from '../../components/Svg/Svg'
+import { Trash2 } from 'lucide-react'
 import { useCart } from '../../contexts/cart/CartContext'
 import { useAuth } from '../../contexts/auth/AuthContext'
 import { imgSrc } from '../../helpers/imgSrc'
@@ -21,7 +22,7 @@ type Props = {
 const CartItem: React.FC<Props> = ({ cartItem }) => {
   const { product, count, id, user, price } = cartItem
 
-  const mobile = useMediaQuery('(max-width:750px)')
+  const mobile = useMobile()
   const { deleteFromCart, getCartItems, deleteFromLocalCart } = useCart()
   const { getUser, isUserExist } = useAuth()
 
@@ -74,7 +75,7 @@ const CartItem: React.FC<Props> = ({ cartItem }) => {
         <StyledDialog
           icon={
             <IconButton className="cart-item__delete" type="button" sx={{ p: '6px', position: 'absolute' }}>
-              <Svg id="trash" width={30} height={30}/>
+              <Trash2 size={24} strokeWidth={1.5} />
             </IconButton>
           }
           title="Удалить товар"

@@ -140,7 +140,7 @@ export class OrdersService {
         Товары: ${cart
           .map(
             (cart) =>
-              `${this.configService.get('MAIN_URL')}/products/${
+              `${this.configService.get('APP_URL')}/products/${
                 cart.product.id
               }`,
           )
@@ -149,7 +149,7 @@ export class OrdersService {
     };
 
     await this.emailService.sendMail({
-      to: this.configService.get('EMAIL_USER'),
+      to: this.configService.get('SMTP_USER'),
       ...options,
     });
 

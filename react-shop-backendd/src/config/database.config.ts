@@ -4,25 +4,21 @@ import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 export type DatabaseConfiguration = TypeOrmModuleOptions;
 
 export default registerAs('database', (): DatabaseConfiguration => {
-  const synchronize = process.env.TYPEORM_SYNCHRONIZE === 'true';
-  const ssl = process.env.DATABASE_SSL === 'true';
-  const logging = process.env.TYPEORM_LOGGING === 'true';
+  const databaseUrl = new URL(process.env.DATABASE_URL!);
+  const schema = databaseUrl.searchParams.get('schema') ?? 'public';
 
   return {
     type: 'postgres',
-    host: process.env.DATABASE_HOST,
-    port: Number.parseInt(process.env.DATABASE_PORT ?? '5432', 10),
-    database: process.env.DATABASE_NAME,
-    username: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    schema: process.env.DATABASE_SCHEMA ?? 'public',
-    synchronize,
-    logging,
-    ssl: ssl
-      ? {
-          rejectUnauthorized:
-            process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
-        }
+    host: databaseUrl.hostname,
+    port: Number(databaseUrl.port) || 5432,
+    database: databaseUrl.pathname.slice(1),
+    username: databaseUrl.username,
+    password: databaseUrl.password,
+    schema,
+    synchronize: process.env.DB_SYNC === 'true',
+    logging: process.env.DB_LOGGING === 'true',
+    ssl: databaseUrl.searchParams.get('sslmode') === 'require'
+      ? { rejectUnauthorized: false }
       : undefined,
     autoLoadEntities: true,
     entities: ['dist/**/*.entity.js'],

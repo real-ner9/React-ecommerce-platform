@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography } from '@mui/material'
 import ListWithTitle from '../../../components/ListWithTitle/ListWithTitle'
+import { shopTexts } from '../../../config/shopTexts'
 
 const TabContacts: React.FC = () => {
   return (
@@ -15,29 +16,29 @@ const TabContacts: React.FC = () => {
             options={[
               {
                 title: 'Телефон',
-                text: <a href="tel:89635207570">+7 963 520 7570</a>,
+                text: <a href={shopTexts.contacts.phoneHref}>{shopTexts.contacts.phone}</a>,
               },
               {
                 title: 'Вконтакте',
                 text: (
-                  <a rel="noreferrer" href="https://vk.com/club219176295" target="_blank">
-                    https://vk.com/club219176295
+                  <a rel="noreferrer" href={shopTexts.contacts.vk} target="_blank">
+                    {shopTexts.contacts.vk}
                   </a>
                 ),
               },
               {
                 title: 'Инстаграм',
                 text: (
-                  <a rel="noreferrer" href="https://instagram.com/tattoonamatata.shop?igshid=YmMyMTA2M2Y=" target="_blank">
-                    https://instagram.com/tattoonamatata.shop?igshid=YmMyMTA2M2Y=
+                  <a rel="noreferrer" href={shopTexts.contacts.instagram} target="_blank">
+                    {shopTexts.contacts.instagram}
                   </a>
                 ),
               },
               {
                 title: 'Телеграм',
                 text: (
-                  <a rel="noreferrer" href="https://t.me/tattoona_matata" target="_blank">
-                    https://t.me/tattoona_matata
+                  <a rel="noreferrer" href={shopTexts.contacts.telegram} target="_blank">
+                    {shopTexts.contacts.telegram}
                   </a>
                 ),
               },

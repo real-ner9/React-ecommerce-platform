@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
-import Svg from '../Svg/Svg'
+import { Trash2 } from 'lucide-react'
 import { imgSrc } from '../../helpers/imgSrc'
 
 type Props = {
@@ -23,7 +23,7 @@ const FileInputItem: React.FC<Props> = ({ onDelete, id }) => {
     <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="file-input__img-wrapper">
       {hovered && (
         <IconButton onClick={() => onDelete(id)} className="file-input__delete-icon" type="button" sx={{ p: '6px' }}>
-          <Svg id="trash" width={30} height={30}/>
+          <Trash2 size={24} strokeWidth={1.5} />
         </IconButton>
       )}
       <img

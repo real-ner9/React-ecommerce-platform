@@ -11,7 +11,7 @@ import type {
   EditCategoryPayload,
 } from '../../../contexts/productsFilters/CategoriesContext/types';import { useCategories } from '../../../contexts/productsFilters/CategoriesContext/CategoriesContext'
 import CategoriesList from '../../../components/CategoriesList/CategoriesList'
-import Svg from '../../../components/Svg/Svg'
+import { Pencil, Trash2 } from 'lucide-react'
 import StyledDialog from '../../../components/StyledDialog/StyledDialog'
 import type { HandleClickEmpty } from '../../../types/types';
 const TabCategories: React.FC = () => {
@@ -19,7 +19,7 @@ const TabCategories: React.FC = () => {
 
   const handleCreateCategory = (data: CategoryInput) => {
     const payload: CreateCategoryPayload = {
-      ...data,
+      name: data.name,
       img_id: data.img_ids[0],
     }
 
@@ -28,7 +28,7 @@ const TabCategories: React.FC = () => {
 
   const handleEditCategory = (id: number, data: CategoryInput, handleClose: HandleClickEmpty) => {
     const payload: EditCategoryPayload = {
-      ...data,
+      name: data.name,
       img_id: data.img_ids[0],
     }
 
@@ -62,7 +62,7 @@ const TabCategories: React.FC = () => {
             <StyledModal
               icon={
                 <IconButton type="button" sx={{ p: '6px' }}>
-                  <Svg fill="white" id="pencil" width={30} height={30}/>
+                  <Pencil size={24} strokeWidth={1.5} color="white" />
                 </IconButton>
               }
               title="Редактировать категорию"
@@ -80,7 +80,7 @@ const TabCategories: React.FC = () => {
             <StyledDialog
               icon={
                 <IconButton className="product-item__delete" type="button" sx={{ p: '6px' }}>
-                  <Svg fill="white" id="trash" width={30} height={30}/>
+                  <Trash2 size={24} strokeWidth={1.5} color="white" />
                 </IconButton>
               }
               title="Удалить категорию"

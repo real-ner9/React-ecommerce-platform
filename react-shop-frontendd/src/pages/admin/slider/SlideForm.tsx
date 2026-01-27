@@ -11,10 +11,10 @@ import { useSlider } from "../../../contexts/slider/SliderContext";
 import type { Slide } from "../../../contexts/slider/types";
 ;
 import { validationErrors } from "../../../helpers/validationErrors";
-import type {
+import {
 	ACCEPTED_IMAGE_TYPES,
-	CreateFilesPayload,
-} from "../../../contexts/files/types";;
+	type CreateFilesPayload,
+} from "../../../contexts/files/types";
 import { useFiles } from "../../../contexts/files/FilesContext";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
 
