@@ -39,6 +39,10 @@ const tabs: TabProps[] = [
     label: 'Заказы',
     to: '/admin/orders',
   },
+  {
+    label: 'Email',
+    to: '/admin/smtp-settings',
+  },
 ]
 
 const AdminPage: React.FC = () => {

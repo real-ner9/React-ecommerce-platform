@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module';
 import { SliderModule } from './slider/slider.module';
 import { ProductsFiltersModule } from './products-filters/products-filters.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { SmtpSettingsModule } from './smtp-settings/smtp-settings.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     SliderModule,
     ProductsFiltersModule,
     FeedbackModule,
+    SmtpSettingsModule,
   ],
 })
 export class ApiModule {}
