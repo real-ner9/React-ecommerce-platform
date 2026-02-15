@@ -52,7 +52,6 @@ react-shop-frontendd/.env.development
 # Temp
 .temp
 .tmp
-*.local
 
 # Runtime
 pids
@@ -68,6 +67,3 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Uploads
 react-shop-backendd/uploads/
-
-# Memory bank
-memory-bank/
