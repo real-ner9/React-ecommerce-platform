@@ -15,6 +15,7 @@ import { BrandsProvider } from './contexts/productsFilters/BrandsContext/BrandsC
 import { ColorsProvider } from './contexts/productsFilters/ColorsContext/ColorsContext'
 import { AmountProvider } from './contexts/productsFilters/AmountContext/AmountContext'
 import { FeedbackProvider } from './contexts/feedback/FeedbackContext'
+import { SmtpSettingsProvider } from './contexts/smtpSettings/SmtpSettingsContext'
 import { ProvidersComposer } from './components/Providers/ProvidersComposer'
 
 type Props = {
@@ -63,6 +64,7 @@ const AppProviders: React.FC<Props> = ({ children }) => {
       ColorsProvider,
       AmountProvider,
       FeedbackProvider,
+      SmtpSettingsProvider,
     ],
     []
   )
