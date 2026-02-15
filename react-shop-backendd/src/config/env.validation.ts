@@ -27,6 +27,10 @@ export const environmentValidationSchema = Joi.object({
   SMTP_USER: Joi.string().optional(),
   SMTP_PASS: Joi.string().optional(),
 
+  // Admin seed (optional)
+  ADMIN_EMAIL: Joi.string().email().optional(),
+  ADMIN_PASSWORD: Joi.string().min(6).optional(),
+
   // Payment (optional)
   YOOKASSA_SHOP_ID: Joi.string().optional(),
   YOOKASSA_SECRET_KEY: Joi.string().optional(),

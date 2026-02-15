@@ -20,9 +20,6 @@ export class AuthService {
     const { name, email, password }: RegisterDto = body;
     const existingUser = await this.userRepository.findOne({ where: { email } });
 
-    console.log(existingUser);
-    console.log(body)
-
     if (existingUser) {
       throw new HttpException(
         {

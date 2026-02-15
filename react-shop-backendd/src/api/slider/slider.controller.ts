@@ -55,6 +55,7 @@ export class SliderController {
   }
 
   @Patch(':id')
+  @UseGuards(RoleGuard(Role.Admin))
   private update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateSlideDto,
