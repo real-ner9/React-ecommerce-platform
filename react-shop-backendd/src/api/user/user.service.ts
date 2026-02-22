@@ -1,11 +1,12 @@
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UpdateNameDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
+import Role from './role.enum';
 
 @Injectable()
 export class UserService {
@@ -41,5 +42,28 @@ export class UserService {
         isEmailConfirmed: true,
       },
     );
+  }
+
+  public async updateRole(id: number, role: Role): Promise<User> {
+    if (role === Role.Admin) {
+      throw new ForbiddenException('Нельзя назначить роль Admin');
+    }
+
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден');
+    }
+
+    if (user.role === Role.Admin) {
+      throw new ForbiddenException('Нельзя изменить роль Admin');
+    }
+
+    user.role = role;
+    return this.userRepository.save(user);
+  }
+
+  public async findAll(): Promise<User[]> {
+    return this.userRepository.find({ order: { id: 'ASC' } });
   }
 }

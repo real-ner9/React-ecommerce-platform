@@ -2,7 +2,9 @@ import { Repository } from 'typeorm';
 
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { User } from '../user/entities/user.entity';
+import Role from '../user/role.enum';
 
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 import { AuthHelper } from './auth.helper';
@@ -14,6 +16,7 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(AuthHelper) private readonly authHelper: AuthHelper,
     @Inject(UserService) private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
 
   public async register(body: RegisterDto): Promise<User | never> {
@@ -29,11 +32,17 @@ export class AuthService {
       );
     }
 
+    const adminEmail = this.configService.get<string>('ADMIN_EMAIL');
+
     const user = new User();
 
     user.name = name ?? null;
     user.email = email;
     user.password = this.authHelper.encodePassword(password);
+
+    if (adminEmail && email === adminEmail) {
+      user.role = Role.Admin;
+    }
 
     return this.userRepository.save(user);
   }

@@ -23,7 +23,7 @@ const AdminGuard: React.FC<Props> = ({ children }) => {
     return <Navigate to="/login" replace />
   }
 
-  if (!isUserExist || user.role !== 'Admin') {
+  if (!isUserExist || (user.role !== 'Admin' && user.role !== 'Moderator')) {
     return <Navigate to="/" replace />
   }
 

@@ -35,6 +35,7 @@ import TabAbout from './pages/profile/about/TabAbout'
 import TabColors from './pages/admin/colors/TabColors'
 import TabAmount from './pages/admin/amount/TabAmount'
 import TabSmtpSettings from './pages/admin/smtpSettings/TabSmtpSettings'
+import TabUsers from './pages/admin/users/TabUsers'
 
 const AppRoutes = () => {
   return (
@@ -90,6 +91,7 @@ const AppRoutes = () => {
         <Route path="/admin/amount" element={<TabAmount/>}/>
         {/*<Route path="/admin/quantity" element={<TabBrands/>}/>*/}
         <Route path="/admin/orders" element={<AdminTabOrders/>}/>
+        <Route path="/admin/users" element={<TabUsers/>}/>
         <Route path="/admin/smtp-settings" element={<TabSmtpSettings/>}/>
       </Route>
       <Route element={<AuthPage/>}>

@@ -2,19 +2,17 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { object, string, type TypeOf } from 'zod'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
-// eslint-disable-next-line import/no-named-as-default
-import ReCAPTCHA from "react-google-recaptcha";
+import { Turnstile } from '@marsidev/react-turnstile'
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
 
 import type { LoginPayload } from "../../../contexts/auth/types";
-;
 import { useAuth } from "../../../contexts/auth/AuthContext";
 import { StyledLoadingButton } from "../../../components/StyledButtons";
 import { validationErrors } from "../../../helpers/validationErrors";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
-import { siteKey } from "../../../env";
+import { turnstileSiteKey } from "../../../env";
 
 const loginSchema = object({
 	email: string({ required_error: validationErrors.required("почта") })
@@ -36,7 +34,7 @@ const LoginPage = () => {
 	const methods = useForm<LoginInput>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
-      email: 'yakikbutovski353@gmail.com',
+      email: 'admin@example.com',
       password: 'admin123',
 		},
 	});
@@ -73,10 +71,11 @@ const LoginPage = () => {
 				<FormInputText name="password" label="Пароль" type="password" />
 			</FormProvider>
 
-			<ReCAPTCHA
-				style={{ marginBottom: "10px" }}
-				sitekey={siteKey}
-				onChange={(token) => setCaptcha(token)}
+			<Turnstile
+				siteKey={turnstileSiteKey}
+				onSuccess={(token) => setCaptcha(token)}
+				onExpire={() => setCaptcha(null)}
+				style={{ marginBottom: '10px' }}
 			/>
 
 			<Link to="/register">Регистрация</Link>

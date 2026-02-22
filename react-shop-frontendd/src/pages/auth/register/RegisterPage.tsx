@@ -2,19 +2,17 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm, type SubmitHandler, FormProvider } from 'react-hook-form'
 import { object, string, type TypeOf } from 'zod'
-// eslint-disable-next-line import/no-named-as-default
-import ReCAPTCHA from "react-google-recaptcha";
+import { Turnstile } from '@marsidev/react-turnstile'
 
 import { Box } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import type { RegisterPayload } from "../../../contexts/auth/types";
-;
 import { useAuth } from "../../../contexts/auth/AuthContext";
 import { StyledLoadingButton } from "../../../components/StyledButtons";
 import { validationErrors } from "../../../helpers/validationErrors";
 import FormInputText from "../../../components/FormInputs/Text/FormInputText";
-import { siteKey } from "../../../env";
+import { turnstileSiteKey } from "../../../env";
 
 const registerSchema = object({
 	name: string().max(32, validationErrors.max("имя", 32)),
@@ -28,9 +26,6 @@ const registerSchema = object({
 	passwordConfirm: string().nonempty(
 		validationErrors.required("подтверждение пароля"),
 	),
-	// terms: literal(true, {
-	//   invalid_type_error: 'Accept Terms is required',
-	// }),
 }).refine((data) => data.password === data.passwordConfirm, {
 	path: ["passwordConfirm"],
 	message: "Пароли не совпадают",
@@ -47,7 +42,7 @@ const RegisterPage: React.FC = () => {
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
 		  name: 'admin',
-		  email: 'yakikbutovski353@gmail.com',
+		  email: 'admin@example.com',
 		  password: 'admin123',
 		  passwordConfirm: 'admin123',
 		},
@@ -98,25 +93,11 @@ const RegisterPage: React.FC = () => {
 				/>
 			</FormProvider>
 
-			{/*<FormGroup>*/}
-			{/*  <FormControlLabel*/}
-			{/*    control={<Checkbox required />}*/}
-			{/*    {...register('terms')}*/}
-			{/*    label={*/}
-			{/*      <Typography color={errors['terms'] ? 'error' : 'inherit'}>*/}
-			{/*        Accept Terms and Conditions*/}
-			{/*      </Typography>*/}
-			{/*    }*/}
-			{/*  />*/}
-			{/*  <FormHelperText error={!!errors['terms']}>*/}
-			{/*    {errors['terms'] ? errors['terms'].message : ''}*/}
-			{/*  </FormHelperText>*/}
-			{/*</FormGroup>*/}
-
-			<ReCAPTCHA
-				style={{ marginBottom: "10px" }}
-				sitekey={siteKey}
-				onChange={(token) => setCaptcha(token)}
+			<Turnstile
+				siteKey={turnstileSiteKey}
+				onSuccess={(token) => setCaptcha(token)}
+				onExpire={() => setCaptcha(null)}
+				style={{ marginBottom: '10px' }}
 			/>
 
 			<Link to="/login">Войти</Link>

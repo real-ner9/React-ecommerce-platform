@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import './styles.scss'
 import { Stack, Tab, Tabs } from '@mui/material'
 import { useMobile } from '../../hooks/useMobile'
 import { type TabProps } from '../../components/TabPanel/TabPanel'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/auth/AuthContext'
 
-const tabs: TabProps[] = [
+type AdminTabProps = TabProps & {
+  adminOnly?: boolean
+}
+
+const tabs: AdminTabProps[] = [
   {
     label: 'Товары',
     to: '/admin/products',
@@ -31,23 +36,31 @@ const tabs: TabProps[] = [
     label: 'Обьемы',
     to: '/admin/amount',
   },
-  // {
-  //   label: 'Количество',
-  //   to: '/admin/quantities',
-  // },
   {
     label: 'Заказы',
     to: '/admin/orders',
   },
   {
+    label: 'Пользователи',
+    to: '/admin/users',
+    adminOnly: true,
+  },
+  {
     label: 'Email',
     to: '/admin/smtp-settings',
+    adminOnly: true,
   },
 ]
 
 const AdminPage: React.FC = () => {
   const location = useLocation()
   const mobile = useMobile()
+  const { user } = useAuth()
+
+  const visibleTabs = useMemo(
+    () => tabs.filter((tab) => !tab.adminOnly || user?.role === 'Admin'),
+    [user?.role],
+  )
 
   return (
     <div className="admin">
@@ -64,7 +77,7 @@ const AdminPage: React.FC = () => {
             // sx={{ borderRight: 1, borderColor: 'divider' }}
             className="admin-tabs tabs"
           >
-            {tabs.map(({ label, to }, index) => (
+            {visibleTabs.map(({ label, to }, index) => (
               <Tab
                 key={index}
                 value={to}

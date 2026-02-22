@@ -5,6 +5,8 @@ import { createTransport } from 'nodemailer';
 import { SmtpSettings } from './entities/smtp-settings.entity';
 import { UpdateSmtpSettingsDto } from './dto/smtp-settings.dto';
 
+const MASKED_PASS = '••••••••';
+
 @Injectable()
 export class SmtpSettingsService {
   private readonly logger = new Logger(SmtpSettingsService.name);
@@ -20,7 +22,7 @@ export class SmtpSettingsService {
 
     return {
       ...settings,
-      pass: settings.pass ? '••••••••' : '',
+      pass: settings.pass ? MASKED_PASS : '',
     };
   }
 
@@ -28,29 +30,39 @@ export class SmtpSettingsService {
     return this.repo.findOne({ where: { id: 1 } });
   }
 
-  async updateSettings(dto: UpdateSmtpSettingsDto): Promise<SmtpSettings> {
+  async updateSettings(dto: UpdateSmtpSettingsDto): Promise<Partial<SmtpSettings>> {
     let settings = await this.repo.findOne({ where: { id: 1 } });
 
     if (settings) {
-      Object.assign(settings, dto);
+      const { pass, ...rest } = dto;
+      Object.assign(settings, rest);
+      if (pass && pass !== MASKED_PASS) {
+        settings.pass = pass;
+      }
     } else {
       settings = this.repo.create({ ...dto, id: 1 });
     }
 
     const saved = await this.repo.save(settings);
     this.logger.log(`SMTP settings updated: ${saved.host}:${saved.port}`);
-    return saved;
+    return { ...saved, pass: MASKED_PASS };
   }
 
   async testConnection(dto: UpdateSmtpSettingsDto): Promise<{ success: boolean; message: string }> {
     try {
+      let pass = dto.pass;
+      if (pass === MASKED_PASS) {
+        const existing = await this.repo.findOne({ where: { id: 1 } });
+        pass = existing?.pass || '';
+      }
+
       const transporter = createTransport({
         host: dto.host,
         port: dto.port,
         secure: dto.secure,
         auth: {
           user: dto.user,
-          pass: dto.pass,
+          pass,
         },
       });
 

@@ -2,12 +2,21 @@ import React, { useState } from 'react'
 import { boolean, number, object, string, type TypeOf } from 'zod'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Alert, Box, Stack, Typography } from '@mui/material'
+import { Alert, Box, MenuItem, Select, Stack, Typography, FormControl, InputLabel } from '@mui/material'
 
 import { StyledLoadingButton } from '../../../components/StyledButtons'
 import FormInputText from '../../../components/FormInputs/Text/FormInputText'
 import FormInputCheckbox from '../../../components/FormInputs/Checkbox/FormInputCheckbox'
 import type { SmtpSettingsData } from '../../../contexts/smtpSettings/types'
+
+const providers = [
+  { label: 'Gmail', host: 'smtp.gmail.com', port: 587, secure: false },
+  { label: 'Yandex', host: 'smtp.yandex.ru', port: 465, secure: true },
+  { label: 'Mail.ru', host: 'smtp.mail.ru', port: 465, secure: true },
+  { label: 'Outlook / Hotmail', host: 'smtp.office365.com', port: 587, secure: false },
+  { label: 'Brevo', host: 'smtp-relay.brevo.com', port: 587, secure: false },
+  { label: 'Resend', host: 'smtp.resend.com', port: 465, secure: true },
+] as const
 
 const smtpSchema = object({
   host: string().nonempty('Host is required'),
@@ -31,13 +40,15 @@ const SmtpSettingsForm: React.FC<Props> = ({ defaultValues, onSubmit, onTest }) 
   const [saving, setSaving] = useState(false)
   const [testing, setTesting] = useState(false)
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null)
+  const [saveResult, setSaveResult] = useState<{ success: boolean; message: string } | null>(null)
+  const [selectedProvider, setSelectedProvider] = useState('Gmail')
 
   const methods = useForm<SmtpInput>({
     resolver: zodResolver(smtpSchema),
     defaultValues: {
-      host: defaultValues?.host || '',
+      host: defaultValues?.host || 'smtp.gmail.com',
       port: defaultValues?.port || 587,
-      secure: defaultValues?.secure || false,
+      secure: defaultValues?.secure ?? false,
       user: defaultValues?.user || '',
       pass: defaultValues?.pass || '',
       fromName: defaultValues?.fromName || '',
@@ -45,13 +56,34 @@ const SmtpSettingsForm: React.FC<Props> = ({ defaultValues, onSubmit, onTest }) 
     },
   })
 
-  const { handleSubmit } = methods
+  const { handleSubmit, setValue } = methods
+
+  const handleProviderChange = (providerLabel: string) => {
+    setSelectedProvider(providerLabel)
+    const provider = providers.find((p) => p.label === providerLabel)
+    if (provider) {
+      setValue('host', provider.host)
+      setValue('port', provider.port)
+      setValue('secure', provider.secure)
+    }
+  }
 
   const onSubmitHandler: SubmitHandler<SmtpInput> = (data) => {
     setSaving(true)
-    onSubmit(data).finally(() => {
-      setSaving(false)
-    })
+    setSaveResult(null)
+    onSubmit(data)
+      .then(() => {
+        setSaveResult({ success: true, message: 'Настройки сохранены' })
+      })
+      .catch((error) => {
+        setSaveResult({
+          success: false,
+          message: error?.response?.data?.message || error.message || 'Ошибка сохранения',
+        })
+      })
+      .finally(() => {
+        setSaving(false)
+      })
   }
 
   const handleTest = () => {
@@ -85,15 +117,36 @@ const SmtpSettingsForm: React.FC<Props> = ({ defaultValues, onSubmit, onTest }) 
         autoComplete="off"
         onSubmit={handleSubmit(onSubmitHandler)}
       >
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Почтовый сервис</InputLabel>
+          <Select
+            value={selectedProvider}
+            label="Почтовый сервис"
+            onChange={(e) => handleProviderChange(e.target.value)}
+          >
+            {providers.map((p) => (
+              <MenuItem key={p.label} value={p.label}>
+                {p.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <FormProvider {...methods}>
           <FormInputText label="SMTP Host" name="host" />
           <FormInputText label="SMTP Port" name="port" type="number" />
           <FormInputCheckbox label="Secure (SSL/TLS)" name="secure" />
-          <FormInputText label="User" name="user" />
-          <FormInputText label="Password" name="pass" type="password" />
-          <FormInputText label="From Name" name="fromName" />
-          <FormInputText label="From Email" name="fromEmail" />
+          <FormInputText label="User (email)" name="user" />
+          <FormInputText label="Password (пароль приложения)" name="pass" type="password" />
+          <FormInputText label="Имя отправителя" name="fromName" />
+          <FormInputText label="Email отправителя" name="fromEmail" />
         </FormProvider>
+
+        {saveResult && (
+          <Alert severity={saveResult.success ? 'success' : 'error'} sx={{ mb: 2 }}>
+            {saveResult.message}
+          </Alert>
+        )}
 
         {testResult && (
           <Alert severity={testResult.success ? 'success' : 'error'} sx={{ mb: 2 }}>
@@ -108,7 +161,7 @@ const SmtpSettingsForm: React.FC<Props> = ({ defaultValues, onSubmit, onTest }) 
             loading={saving}
             sx={{ py: '0.8rem' }}
           >
-            Save
+            Сохранить
           </StyledLoadingButton>
 
           <StyledLoadingButton
@@ -118,7 +171,7 @@ const SmtpSettingsForm: React.FC<Props> = ({ defaultValues, onSubmit, onTest }) 
             onClick={handleTest}
             sx={{ py: '0.8rem', color: '#000', borderColor: '#000' }}
           >
-            Test Connection
+            Тест подключения
           </StyledLoadingButton>
         </Stack>
       </Box>
