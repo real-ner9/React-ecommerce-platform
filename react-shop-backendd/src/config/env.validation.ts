@@ -18,8 +18,12 @@ export const environmentValidationSchema = Joi.object({
   // URLs
   APP_URL: Joi.string().uri().default('http://localhost:2001'),
 
-  // Files
-  UPLOADS_DIR: Joi.string().default('./uploads'),
+  // MinIO / S3 Storage
+  MINIO_ENDPOINT: Joi.string().uri().required(),
+  MINIO_ACCESS_KEY: Joi.string().required(),
+  MINIO_SECRET_KEY: Joi.string().required(),
+  MINIO_BUCKET: Joi.string().default('ecommerce'),
+  MINIO_USE_SSL: Joi.boolean().default(false),
 
   // Email (optional)
   SMTP_HOST: Joi.string().optional(),

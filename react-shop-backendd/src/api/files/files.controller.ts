@@ -10,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { Response } from 'express';
-import { createReadStream } from 'fs';
-import { join } from 'path';
 import RoleGuard from '../user/role.guard';
 import Role from '../user/role.enum';
 
@@ -24,9 +22,7 @@ export class FilesController {
     @Param('id', ParseIntPipe) id: number,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const file = await this.filesService.findOne(id);
-
-    const stream = createReadStream(join(process.cwd(), file.path));
+    const { stream, file } = await this.filesService.getFileStream(id);
 
     response.set({
       'Content-Disposition': `inline; filename="${file.filename}"`,

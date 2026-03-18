@@ -88,7 +88,9 @@ export class ProductsController {
   private async createSlideImg(
     @UploadedFiles() images: ExpressMulterFile[],
   ): Promise<LocalFile[]> {
-    return Promise.all(images.map((img) => this.filesService.create(img)));
+    return Promise.all(
+      images.map((img) => this.filesService.create(img, 'products-images')),
+    );
   }
 
   @Patch(':id')

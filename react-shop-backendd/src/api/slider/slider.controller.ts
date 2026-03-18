@@ -51,7 +51,7 @@ export class SliderController {
   private createSlideImg(
     @UploadedFile() img: ExpressMulterFile,
   ): Promise<LocalFile> {
-    return this.filesService.create(img);
+    return this.filesService.create(img, 'slider-images');
   }
 
   @Patch(':id')

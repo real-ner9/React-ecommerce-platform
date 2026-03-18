@@ -59,7 +59,7 @@ export class CategoriesController {
   private createImg(
     @UploadedFile() img: ExpressMulterFile,
   ): Promise<LocalFile> {
-    return this.filesService.create(img);
+    return this.filesService.create(img, 'categories-images');
   }
 
   @Patch(':id')
